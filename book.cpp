@@ -32,3 +32,11 @@ void Book::displayBook() {
 int Book::getId() {
     return bookId;
 }
+bool Book::searchById(int id) {
+    if (bookId == id) {
+        displayBook();
+        return true;
+    }
+    return false;
+}
+

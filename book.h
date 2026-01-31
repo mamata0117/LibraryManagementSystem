@@ -14,6 +14,7 @@ public:
     void input();
     void displayBook();
     int getId();
+     bool searchById(int id);
 };
 
 #endif

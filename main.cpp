@@ -1,15 +1,9 @@
-   
-#include <iostream>
-#include "book.h"
-
-using namespace std;
+#include "Library.h"
 
 int main() {
-    Book b;
-
-    b.input();
-    b.displayBook();
-
+    Library lib;
+    lib.menu();
     return 0;
 }
-   
+
+
