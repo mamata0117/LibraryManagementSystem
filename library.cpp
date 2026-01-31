@@ -1,26 +1,98 @@
 #include <iostream>
+#include <fstream>
+
 #include "library.h"
 
 using namespace std;
 
-void Library::menu() {
-    int choice, id;
+Library::Library() {
+    bookHead = NULL;
+    studentHead = NULL;
+}
 
-    while (true) {
-        cout << "\n1. Add Book\n2. Display Book\n3. Search Book\n4. Add Student\n5. Exit\n";
-        cin >> choice;
+void Library::addBook() {
+    Book b;
+    b.input();
+    BookNode* newNode = new BookNode;
+    newNode->data = b;
+    newNode->next = bookHead;
+    bookHead = newNode;
+}
+void Library::saveStudentsToFile() {
+    ofstream file("students.txt");
 
-        switch (choice) {
-            case 1: b.input(); break;
-            case 2: b.displayBook(); break;
-            case 3:
-                cout << "Enter ID: ";
-                cin >> id;
-                if (!b.searchById(id))
-                    cout << "Book not found\n";
-                break;
-            case 4: s.input(); break;
-            case 5: return;
+    StudentNode* temp = studentHead;
+    while (temp != NULL) {
+        temp->data.saveToFile(file);
+        temp = temp->next;
+    }
+
+    file.close();
+}
+void Library::loadStudentsFromFile() {
+    ifstream file("students.txt");
+
+    if (!file) return;
+
+    while (!file.eof()) {
+        student s;
+        s.loadFromFile(file);
+
+        if (file.fail()) break;
+
+        StudentNode* newNode = new StudentNode;
+        newNode->data = s;
+        newNode->next = studentHead;
+        studentHead = newNode;
+    }
+
+    file.close();
+}
+void Library::addStudent() {
+    student s;
+    s.inputstudent();
+
+    StudentNode* newNode = new StudentNode;
+    newNode->data = s;
+    newNode->next = studentHead;
+    studentHead = newNode;
+
+    cout << "Student added successfully!\n";
+}
+void Library::removeStudent(int id) {
+    if (studentHead == NULL) {
+        cout << "No students found.\n";
+        return;
+    }
+
+    StudentNode* temp = studentHead;
+    StudentNode* prev = NULL;
+
+    while (temp != NULL) {
+        if (temp->data.getId() == id) {
+
+            // if first node
+            if (prev == NULL)
+                studentHead = temp->next;
+            else
+                prev->next = temp->next;
+
+            delete temp;
+            cout << "Student removed successfully!\n";
+            return;
         }
+
+        prev = temp;
+        temp = temp->next;
+    }
+
+    cout << "Student ID not found.\n";
+}
+void Library::displayStudents() {
+    StudentNode* temp = studentHead;
+
+    while (temp != NULL) {
+        temp->data.displaystudent();
+        temp = temp->next;
     }
 }

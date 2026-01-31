@@ -17,4 +17,4 @@ public:
      bool searchById(int id);
 };
 
-#endif
+#endif //It basically Closes the header guard started at top whic is #ifndef BOOK_H
